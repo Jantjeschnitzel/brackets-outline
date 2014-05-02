@@ -37,7 +37,8 @@ define(function (require, exports, module) {
 	
 	ExtensionUtils.loadStyleSheet(module, "styles.css");
 	
-	function findMatches(regex, lang, content) {
+	function findMatches(regex, lang, content)
+	{
 		if (content === null) {
 			return [];
 		}
@@ -56,7 +57,7 @@ define(function (require, exports, module) {
 					break;
 
 				case "js":
-					name = (match[4] || match[3] || "") + (match[5] || "");
+					name = (match[3] || match[2] || "") + (match[4] || "");
 					break;
 
 				default:
@@ -90,11 +91,12 @@ define(function (require, exports, module) {
 		if (doc !== null) {
 			switch (doc.getLanguage().getName()) {
 			
+			case "PHP":
 			case "JavaScript":
 				if (prefs.get("args")) {
-					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*(\([^\r\n]*\))/g;
+					regex = /((\w*)\s*[=:]\s*)?function\s*(\w*)\s*(\([\w,\s]*\))/g;
 				} else {
-					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
+					regex = /((\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
 				}
 				
 				var fkt = findMatches(regex, "js", doc.getText());

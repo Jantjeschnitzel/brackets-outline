@@ -56,7 +56,8 @@ define(function (require, exports, module) {
 					break;
 
 				case "js":
-					name = (match[4] || match[3]) + match[5];
+					name = (match[4] || match[3] || "") + (match[5] || "");
+					console.log(match, name);
 					break;
 
 				default:
@@ -94,7 +95,7 @@ define(function (require, exports, module) {
 				if (prefs.get("args")) {
 					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*(\([^\r\n]*\))/g;
 				} else {
-					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s+(\w*)\s*()\(/g;
+					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
 				}
 				
 				var fkt = findMatches(regex, "js", doc.getText());

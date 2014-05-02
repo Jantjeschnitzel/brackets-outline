@@ -57,7 +57,6 @@ define(function (require, exports, module) {
 
 				case "js":
 					name = (match[4] || match[3] || "") + (match[5] || "");
-					console.log(match, name);
 					break;
 
 				default:

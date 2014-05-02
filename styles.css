@@ -1,0 +1,46 @@
+#crabcode-outline {
+	margin-bottom:40px;
+}
+
+#crabcode-outline-header {
+	border-top: 1px solid rgba(255,255,255,0.05);
+	padding: 8px 0 9px 12px;
+	font-size: 13px;
+	color: #94a3a7;
+	overflow: hidden;
+}
+
+#crabcode-outline-window {
+	height: 100%;
+	overflow: auto;
+	width: 100%;
+}
+
+.crabcode-outline-entry {
+	color: #fff;
+	padding: 2px 0 2px 22px;
+	border-bottom: 1px solid rgba(0,0,0,0);
+	border-top: 1px solid rgba(0,0,0,0);
+}
+
+.crabcode-outline-entry:hover {
+	background: #2D2E30;
+	border-bottom: 1px solid #454648;
+	border-top: 1px solid #27282A;
+}
+
+.crabcode-outline-css-id, .crabcode-outline-js-function {
+	color: #62D1FF;
+}
+
+.crabcode-outline-css-class, .crabcode-outline-js-var {
+	color: #ff6c6c;
+}
+
+.crabcode-outline-css-font {
+	color: #fe9;
+}
+
+.crabcode-outline-css-tag {
+	color: #ccc;
+}

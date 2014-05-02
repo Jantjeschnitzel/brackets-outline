@@ -1,0 +1,12 @@
+{
+    "name": "crabcode.outline",
+    "title": "JS/CSS Outline",
+    "description": "Quick list of functions and CSS definitions.",
+    "homepage": "https://github.com/crabcode/brackets-outline",
+    "version": "0.0.2",
+    "author": "Crabman <crabman@hypnoticowl.com> (http://hypnoticowl.com/)",
+    "license": "MIT",
+    "engines": {
+        "brackets": ">=0.38.0"
+    }
+}

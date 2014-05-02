@@ -3,7 +3,7 @@
     "title": "JS/CSS Outline",
     "description": "Quick list of functions and CSS definitions.",
     "homepage": "https://github.com/crabcode/brackets-outline",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": "Crabman <crabman@hypnoticowl.com> (http://hypnoticowl.com/)",
     "license": "MIT",
     "engines": {

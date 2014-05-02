@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2014 Hypnotic Crabman
+* Copyright (c) 2014 CrabCode
 *
 * Permission is hereby granted, free of charge, to any person obtaining a
 * copy of this software and associated documentation files (the "Software"),
@@ -37,22 +37,36 @@ define(function (require, exports, module) {
 	
 	ExtensionUtils.loadStyleSheet(module, "styles.css");
 	
-	function findMatches(regex, content) {
+	function findMatches(regex, lang, content) {
 		if (content === null) {
 			return [];
 		}
 		
-		var i, l,
+		var i, j, l, match, name,
 			lines = content.split("\n"),
 			result = [];
 		
 		for (i = 0; i < lines.length; i++) {
-			var matches = lines[i].match(regex);
+			match = regex.exec(lines[i]);
 			
-			if (matches !== null) {
-				for (l = 0; l < matches.length; l++) {
-					result.push([ matches[l].replace(regex, "$1").replace(/\s/g, ""), i,  lines[i].length]);
+			while (match !== null && typeof match !== "undefined") {
+				switch (lang) {
+				case "css":
+					name = match[1];
+					break;
+
+				case "js":
+					name = (match[3] || match[4]) + match[5];
+					break;
+
+				default:
+					name = "";
+					break;
 				}
+				
+				result.push([name.trim(), i, lines[i].length]);
+				
+				match = regex.exec(lines[i]);
 			}
 		}
 		
@@ -77,18 +91,23 @@ define(function (require, exports, module) {
 			switch (doc.getLanguage().getName()) {
 			
 			case "JavaScript":
-				regex = /function\s*(\w*)\(/g;
+				if (prefs.get("args")) {
+					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*(\([^\r\n]*\))\s*\{/g;
+				} else {
+					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s+(\w*)\s*()\(/g;
+				}
 				
-				var fkt = findMatches(regex, doc.getText());
+				var fkt = findMatches(regex, "js", doc.getText());
 				
 				for (i = 0; i < fkt.length; i++) {
 					name = fkt[i][0];
 					
-					if (name.length === 0) {
-						if (prefs.get("unnamed"))
-							name = "function";
-						else
+					if (name.length === 0 || name[0] === "(") {
+						if (prefs.get("unnamed")) {
+							name = "function" + name;
+						} else {
 							continue;
+						}
 					}
 					
 					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: fkt[i][1], ch: fkt[i][2] }, goToLine));
@@ -98,7 +117,7 @@ define(function (require, exports, module) {
 			case "CSS":
 				regex = /([^\r\n,{}]+)((?=[^}]*\{)|\s*\{)/g;
 				
-				var lines = findMatches(regex, doc.getText());
+				var lines = findMatches(regex, "css", doc.getText());
 				
 				for (i = 0; i < lines.length; i++) {
 					switch (lines[i][0][0]) {
@@ -170,12 +189,26 @@ define(function (require, exports, module) {
 		}
     }
 	
+    function toggleArgs() {
+		var check = !this.getChecked();
+        this.setChecked(check);
+		
+		prefs.set("args", check);
+		prefs.save();
+		
+		if (prefs.get("enabled")) {
+			updateOutline();
+		}
+    }
+	
     var cmdOutline = CommandManager.register("Outline", "crabcode.outline.show", toggleOutline);
     var cmdUnnamed = CommandManager.register("Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
+    var cmdArgs = CommandManager.register("Show Arguments", "crabcode.outline.args", toggleArgs);
 	
     var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
     menu.addMenuDivider();
     menu.addMenuItem("crabcode.outline.show");
+    menu.addMenuItem("crabcode.outline.args");
     menu.addMenuItem("crabcode.outline.unnamed");
 	
 	if (typeof prefs.get("enabled") !== "boolean") {
@@ -190,6 +223,12 @@ define(function (require, exports, module) {
 		prefs.save();
 	}
 	
+	if (typeof prefs.get("args") !== "boolean") {
+		prefs.definePreference("args", "boolean", true);
+		prefs.set("args", true);
+		prefs.save();
+	}
+	
 	if (prefs.get("enabled")) {
 		cmdOutline.setChecked(true);
 		loadOutline();
@@ -197,5 +236,9 @@ define(function (require, exports, module) {
 	
 	if (prefs.get("unnamed")) {
 		cmdUnnamed.setChecked(true);
+	}
+	
+	if (prefs.get("args")) {
+		cmdArgs.setChecked(true);
 	}
 });

@@ -11,8 +11,7 @@ A small Eclipse-esque outline that lists all functions and CSS definitions in yo
 NOTE: I wrote it specifically for my web projects, but it'll work for any language with a "function name()" structure (name optional).
 
 ### Planned Features
-In the future, I'd like to add arrays, objects, and variables to the outline and display them in a collapsible tree. But right now that's more of a nice-to-have for me, so I'm uncertain if and when I'll get around to it.tension
-3. Click _Install_!
+In the future, I'd like to add arrays, objects, and variables to the outline and display them in a collapsible tree. But right now that's more of a nice-to-have for me, so I'm uncertain if and when I'll get around to it.
 
 ### License
 MIT-licensed -- see `main.js` for details.

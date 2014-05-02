@@ -56,7 +56,7 @@ define(function (require, exports, module) {
 					break;
 
 				case "js":
-					name = (match[3] || match[4]) + match[5];
+					name = (match[4] || match[3]) + match[5];
 					break;
 
 				default:
@@ -92,7 +92,7 @@ define(function (require, exports, module) {
 			
 			case "JavaScript":
 				if (prefs.get("args")) {
-					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*(\([^\r\n]*\))\s*\{/g;
+					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s*(\w*)\s*(\([^\r\n]*\))/g;
 				} else {
 					regex = /((var\s+)?(\w*)\s*[=:]\s*)?function\s+(\w*)\s*()\(/g;
 				}

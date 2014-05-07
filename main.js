@@ -280,7 +280,7 @@ define(function (require, exports, module) {
 		prefs.save();
 	}
 	
-	if (typeof prefs.get("args") !== "string") {
+	if (typeof prefs.get("pos") !== "string") {
 		prefs.definePreference("pos", "string", "left");
 		prefs.set("pos", "left");
 		prefs.save();

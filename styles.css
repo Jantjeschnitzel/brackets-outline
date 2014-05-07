@@ -1,8 +1,8 @@
 #crabcode-outline {
-    margin-bottom:40px;
 }
 
 #crabcode-outline.left {
+    margin-bottom:40px;
 }
 
 #crabcode-outline.right {
@@ -10,6 +10,7 @@
     width:20%;
     height:100%;
     border-left:1px solid grey;
+    background-color:rgb(60, 63, 65);
 }
 
 #crabcode-outline-header {

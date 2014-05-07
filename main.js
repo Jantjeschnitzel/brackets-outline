@@ -23,17 +23,17 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, $, brackets, window */
 define(function (require, exports, module) {
-    "use strict";
+	"use strict";
 	
-    var CommandManager  = brackets.getModule("command/CommandManager"),
+	var CommandManager  = brackets.getModule("command/CommandManager"),
 		DocumentManager = brackets.getModule('document/DocumentManager'),
 		EditorManager   = brackets.getModule('editor/EditorManager'),
 		ExtensionUtils  = brackets.getModule("utils/ExtensionUtils"),
-        Menus           = brackets.getModule("command/Menus"),
-        PanelManager    = brackets.getModule("view/PanelManager"),
-		Preferences	    = brackets.getModule("preferences/PreferencesManager"),
-		Resizer         = brackets.getModule("utils/Resizer"),
-		prefs           = Preferences.getExtensionPrefs("crabcode.outline");
+		Menus		   = brackets.getModule("command/Menus"),
+		PanelManager	= brackets.getModule("view/PanelManager"),
+		Preferences		= brackets.getModule("preferences/PreferencesManager"),
+		Resizer		 = brackets.getModule("utils/Resizer"),
+		prefs		   = Preferences.getExtensionPrefs("crabcode.outline");
 	
 	ExtensionUtils.loadStyleSheet(module, "styles.css");
 	
@@ -171,18 +171,18 @@ define(function (require, exports, module) {
 	}
 	
 	function loadOutline() {
-        var position = prefs.get("pos");
+		var position = prefs.get("pos");
 		var outline = $(document.createElement("div")).attr("id", "crabcode-outline").attr("class", position);
 		outline.append($(document.createElement("div")).attr("id", "crabcode-outline-header").text("Outline"));
 		outline.append($(document.createElement("div")).attr("id", "crabcode-outline-window"));
-        
-        if ("right" == position) {
-            $("#editor-holder").append(outline);
-            Resizer.makeResizable(outline, "horz", "left", 75);
-        } else if ("left" == position) {
-            $("#sidebar").append(outline);
-            Resizer.makeResizable(outline, "vert", "top", 75);
-        }
+		
+		if ("right" == position) {
+			$("#editor-holder").append(outline);
+			Resizer.makeResizable(outline, "horz", "left", 75);
+		} else if ("left" == position) {
+			$("#sidebar").append(outline);
+			Resizer.makeResizable(outline, "vert", "top", 75);
+		}
 		
 		$(DocumentManager).on('currentDocumentChange.bracketsCodeOutline', updateOutline);
 		$(DocumentManager).on('documentSaved', updateOutline);
@@ -190,17 +190,17 @@ define(function (require, exports, module) {
 		
 		updateOutline();
 	}
-    
-    function removeOutline() {
-        $("#crabcode-outline").remove();
-        $(DocumentManager).off('currentDocumentChange.bracketsCodeOutline');
-        $(DocumentManager).off('documentSaved');
-        $(DocumentManager).off('workingSetRemove.bracketsCodeOutline');
-    }
 	
-    function toggleOutline() {
+	function removeOutline() {
+		$("#crabcode-outline").remove();
+		$(DocumentManager).off('currentDocumentChange.bracketsCodeOutline');
+		$(DocumentManager).off('documentSaved');
+		$(DocumentManager).off('workingSetRemove.bracketsCodeOutline');
+	}
+	
+	function toggleOutline() {
 		var check = !this.getChecked();
-        this.setChecked(check);
+		this.setChecked(check);
 		
 		prefs.set("enabled", check);
 		prefs.save();
@@ -208,13 +208,13 @@ define(function (require, exports, module) {
 		if (check) {
 			loadOutline();
 		} else {
-            removeOutline();
+			removeOutline();
 		}
-    }
+	}
 	
-    function toggleUnnamed() {
+	function toggleUnnamed() {
 		var check = !this.getChecked();
-        this.setChecked(check);
+		this.setChecked(check);
 		
 		prefs.set("unnamed", check);
 		prefs.save();
@@ -222,11 +222,11 @@ define(function (require, exports, module) {
 		if (prefs.get("enabled")) {
 			updateOutline();
 		}
-    }
+	}
 	
-    function toggleArgs() {
+	function toggleArgs() {
 		var check = !this.getChecked();
-        this.setChecked(check);
+		this.setChecked(check);
 		
 		prefs.set("args", check);
 		prefs.save();
@@ -234,35 +234,33 @@ define(function (require, exports, module) {
 		if (prefs.get("enabled")) {
 			updateOutline();
 		}
-    }
+	}
 	
-    function togglePos() {
+	function togglePos() {
 		var check = !this.getChecked();
-        this.setChecked(check);
+		this.setChecked(check);
 		
 		prefs.set("pos", check ? "left" : "right");
 		prefs.save();
-        
-        removeOutline();
+		
+		removeOutline();
 		
 		if (prefs.get("enabled")) {
 			loadOutline();
 		}
-    }
+	}
 	
-    var cmdOutline = CommandManager.register("Outline: Show", "crabcode.outline.show", toggleOutline);
-    var cmdUnnamed = CommandManager.register("Outline: Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
-    var cmdArgs    = CommandManager.register("Outline: Show Arguments", "crabcode.outline.args", toggleArgs);
-    var cmdPos     = CommandManager.register("Outline: In Sidebar", "crabcode.outline.pos", togglePos);
+	var cmdOutline = CommandManager.register("Outline: Show", "crabcode.outline.show", toggleOutline);
+	var cmdUnnamed = CommandManager.register("Outline: Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
+	var cmdArgs	= CommandManager.register("Outline: Show Arguments", "crabcode.outline.args", toggleArgs);
+	var cmdPos	 = CommandManager.register("Outline: In Sidebar", "crabcode.outline.pos", togglePos);
 	
-    var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
-    menu.addMenuDivider();
-    menu.addMenuItem("crabcode.outline.show");
-    menu.addMenuItem("crabcode.outline.args");
-    menu.addMenuItem("crabcode.outline.unnamed");
-    menu.addMenuItem("crabcode.outline.pos");
-    
-    console.log(prefs.get("pos"));
+	var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
+	menu.addMenuDivider();
+	menu.addMenuItem("crabcode.outline.show");
+	menu.addMenuItem("crabcode.outline.args");
+	menu.addMenuItem("crabcode.outline.unnamed");
+	menu.addMenuItem("crabcode.outline.pos");
 	
 	if (typeof prefs.get("enabled") !== "boolean") {
 		prefs.definePreference("enabled", "boolean", true);

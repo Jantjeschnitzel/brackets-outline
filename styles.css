@@ -1,5 +1,15 @@
 #crabcode-outline {
-	margin-bottom:40px;
+    margin-bottom:40px;
+}
+
+#crabcode-outline.left {
+}
+
+#crabcode-outline.right {
+    float:right;
+    width:20%;
+    height:100%;
+    border-left:1px solid grey;
 }
 
 #crabcode-outline-header {

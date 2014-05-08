@@ -55,3 +55,15 @@
 .crabcode-outline-css-tag {
 	color: #ccc;
 }
+
+#outline-toolbar-icon {
+    font-size:2em;
+    color:rgb(173,173,173);
+    text-decoration: none;
+}
+#outline-toolbar-icon.enabled {
+    color:rgb(100,159,242);
+}
+#outline-toolbar-icon:before {
+	content: "\2691";
+}

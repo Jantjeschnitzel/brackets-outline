@@ -215,7 +215,6 @@ define(function (require, exports, module) {
 			}
 			
 			$("#crabcode-outline").css("max-height", (window.innerHeight - offset - 80) + "px");
-			console.log("height", $("#crabcode-outline").css("max-height"));
 		} else {
 			$("#crabcode-outline").css("max-width", ($("#editor-holder").width() - 50) + "px");
 		}

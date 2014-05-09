@@ -6,7 +6,7 @@ A small Eclipse-esque outline that lists all functions and CSS definitions in yo
 
 ### What's New
 * Toggle Function Arguments
-* Toggle Outline from Toolbar (Thanks to [Karsten Bruckmann][https://github.com/karsten-bruckmann]!)
+* Toggle Outline from Toolbar (Thanks to [Karsten Bruckmann](https://github.com/karsten-bruckmann)!)
 * Show Outline in Sidebar or next to the Toolbar (Also thanks to Karsten!)
 
 ### Current Features

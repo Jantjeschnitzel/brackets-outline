@@ -25,15 +25,15 @@
 define(function (require, exports, module) {
 	"use strict";
 	
-	var CommandManager  = brackets.getModule("command/CommandManager"),
-		DocumentManager = brackets.getModule('document/DocumentManager'),
-		EditorManager   = brackets.getModule('editor/EditorManager'),
-		ExtensionUtils  = brackets.getModule("utils/ExtensionUtils"),
-		Menus		   = brackets.getModule("command/Menus"),
+	var CommandManager	= brackets.getModule("command/CommandManager"),
+		DocumentManager	= brackets.getModule('document/DocumentManager'),
+		EditorManager	= brackets.getModule('editor/EditorManager'),
+		ExtensionUtils	= brackets.getModule("utils/ExtensionUtils"),
+		Menus			= brackets.getModule("command/Menus"),
 		PanelManager	= brackets.getModule("view/PanelManager"),
 		Preferences		= brackets.getModule("preferences/PreferencesManager"),
-		Resizer		 = brackets.getModule("utils/Resizer"),
-		prefs		   = Preferences.getExtensionPrefs("crabcode.outline");
+		Resizer			= brackets.getModule("utils/Resizer"),
+		prefs			= Preferences.getExtensionPrefs("crabcode.outline");
 	
 	ExtensionUtils.loadStyleSheet(module, "styles.css");
 	
@@ -190,7 +190,8 @@ define(function (require, exports, module) {
 		
 		$(DocumentManager).on('currentDocumentChange.bracketsCodeOutline', updateOutline);
 		$(DocumentManager).on('documentSaved', updateOutline);
-		$(DocumentManager).on('workingSetRemove.bracketsCodeOutline', updateOutline);
+		$(DocumentManager).on("workingSetAdd", handleResize);
+		$(DocumentManager).on("workingSetRemove", handleResize);
 		
 		updateOutline();
 	}
@@ -201,7 +202,23 @@ define(function (require, exports, module) {
         $("#outline-toolbar-icon").removeClass("enabled");
 		$(DocumentManager).off('currentDocumentChange.bracketsCodeOutline');
 		$(DocumentManager).off('documentSaved');
-		$(DocumentManager).off('workingSetRemove.bracketsCodeOutline');
+		$(DocumentManager).off("workingSetAdd");
+		$(DocumentManager).off("workingSetRemove");
+	}
+	
+	function handleResize() {
+		if (prefs.get("sidebar")) {
+			var offset = 0;
+			
+			if ($("#working-set-header").css("display") !== "none") {
+				offset = $("#working-set-header").outerHeight() + $("#open-files-container").outerHeight();
+			}
+			
+			$("#crabcode-outline").css("max-height", (window.innerHeight - offset - 80) + "px");
+			console.log("height", $("#crabcode-outline").css("max-height"));
+		} else {
+			$("#crabcode-outline").css("max-width", ($("#editor-holder").width() - 50) + "px");
+		}
 	}
 	
 	function toggleOutline() {
@@ -249,12 +266,13 @@ define(function (require, exports, module) {
 		
 		if (prefs.get("enabled")) {
 			loadOutline();
+			handleResize();
 		}
 	}
 	
-	var cmdUnnamed = CommandManager.register("Outline: Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
-	var cmdArgs	= CommandManager.register("Outline: Show Arguments", "crabcode.outline.args", toggleArgs);
-	var cmdSidebar	 = CommandManager.register("Outline: In Sidebar", "crabcode.outline.sidebar", toggleSidebar);
+	var cmdUnnamed	= CommandManager.register("Outline: Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
+	var cmdArgs		= CommandManager.register("Outline: Show Arguments", "crabcode.outline.args", toggleArgs);
+	var cmdSidebar	= CommandManager.register("Outline: In Sidebar", "crabcode.outline.sidebar", toggleSidebar);
 	
 	var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
 	menu.addMenuDivider();
@@ -308,4 +326,7 @@ define(function (require, exports, module) {
 	if (prefs.get("sidebar")) {
 		cmdSidebar.setChecked(true);
 	}
+	
+	window.addEventListener("resize", handleResize);
+	handleResize();
 });

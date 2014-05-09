@@ -188,9 +188,9 @@ define(function (require, exports, module) {
 			Resizer.makeResizable(outline, "horz", "left", 64);
 		}
 		
-		$(DocumentManager).on('currentDocumentChange.bracketsCodeOutline', updateOutline);
+		$(DocumentManager).on('currentDocumentChange', updateOutline);
 		$(DocumentManager).on('documentSaved', updateOutline);
-		$(DocumentManager).on('workingSetRemove.bracketsCodeOutline', updateOutline);
+		$(DocumentManager).on('workingSetRemove', updateOutline);
 		
 		updateOutline();
 	}
@@ -199,9 +199,9 @@ define(function (require, exports, module) {
 		$("#crabcode-outline").remove();
         $("#outline-toolbar-icon").addClass("disabled");
         $("#outline-toolbar-icon").removeClass("enabled");
-		$(DocumentManager).off('currentDocumentChange.bracketsCodeOutline');
+		$(DocumentManager).off('currentDocumentChange');
 		$(DocumentManager).off('documentSaved');
-		$(DocumentManager).off('workingSetRemove.bracketsCodeOutline');
+		$(DocumentManager).off('workingSetRemove');
 	}
 	
 	function toggleOutline() {

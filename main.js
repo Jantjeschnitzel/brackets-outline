@@ -171,20 +171,21 @@ define(function (require, exports, module) {
 	}
 	
 	function loadOutline() {
-		var position = prefs.get("pos");
-		var outline = $(document.createElement("div")).attr("id", "crabcode-outline").attr("class", position);
+		var sidebar = prefs.get("sidebar");
+		
+		var outline = $(document.createElement("div")).attr("id", "crabcode-outline").attr("class", (sidebar ? "left" : "right"));
 		outline.append($(document.createElement("div")).attr("id", "crabcode-outline-header").text("Outline"));
 		outline.append($(document.createElement("div")).attr("id", "crabcode-outline-window"));
 		
         $("#outline-toolbar-icon").addClass("enabled");
         $("#outline-toolbar-icon").removeClass("disabled");
         
-		if ("right" == position) {
-			$("#editor-holder").prepend(outline);
-			Resizer.makeResizable(outline, "horz", "left", 75);
-		} else if ("left" == position) {
+		if (sidebar) {
 			$("#sidebar").append(outline);
 			Resizer.makeResizable(outline, "vert", "top", 75);
+		} else {
+			$("#editor-holder").prepend(outline);
+			Resizer.makeResizable(outline, "horz", "left", 64);
 		}
 		
 		$(DocumentManager).on('currentDocumentChange.bracketsCodeOutline', updateOutline);
@@ -237,11 +238,11 @@ define(function (require, exports, module) {
 		}
 	}
 	
-	function togglePos() {
+	function toggleSidebar() {
 		var check = !this.getChecked();
 		this.setChecked(check);
 		
-		prefs.set("pos", check ? "left" : "right");
+		prefs.set("sidebar", check);
 		prefs.save();
 		
 		removeOutline();
@@ -253,11 +254,11 @@ define(function (require, exports, module) {
 	
 	var cmdUnnamed = CommandManager.register("Outline: Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
 	var cmdArgs	= CommandManager.register("Outline: Show Arguments", "crabcode.outline.args", toggleArgs);
-	var cmdPos	 = CommandManager.register("Outline: In Sidebar", "crabcode.outline.pos", togglePos);
+	var cmdSidebar	 = CommandManager.register("Outline: In Sidebar", "crabcode.outline.sidebar", toggleSidebar);
 	
 	var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
 	menu.addMenuDivider();
-	menu.addMenuItem("crabcode.outline.pos");
+	menu.addMenuItem("crabcode.outline.sidebar");
 	menu.addMenuItem("crabcode.outline.args");
 	menu.addMenuItem("crabcode.outline.unnamed");
     
@@ -286,9 +287,9 @@ define(function (require, exports, module) {
 		prefs.save();
 	}
 	
-	if (typeof prefs.get("pos") !== "string") {
-		prefs.definePreference("pos", "string", "left");
-		prefs.set("pos", "left");
+	if (typeof prefs.get("sidebar") !== "boolean") {
+		prefs.definePreference("sidebar", "boolean", true);
+		prefs.set("sidebar", true);
 		prefs.save();
 	}
 	
@@ -304,7 +305,7 @@ define(function (require, exports, module) {
 		cmdArgs.setChecked(true);
 	}
 
-	if ("left" == prefs.get("pos")) {
-		cmdPos.setChecked(true);
+	if (prefs.get("sidebar")) {
+		cmdSidebar.setChecked(true);
 	}
 });

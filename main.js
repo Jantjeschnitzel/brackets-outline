@@ -37,8 +37,7 @@ define(function (require, exports, module) {
 	
 	ExtensionUtils.loadStyleSheet(module, "styles.css");
 	
-	function findMatches(regex, lang, content)
-	{
+	function findMatches(regex, lang, content) {
 		if (content === null) {
 			return [];
 		}

@@ -81,6 +81,20 @@ define(function (require, exports, module) {
 		currentEditor.focus();
 	}
 	
+	function handleResize() {
+		if (prefs.get("sidebar")) {
+			var offset = 0;
+
+			if ($("#working-set-header").css("display") !== "none") {
+				offset = $("#working-set-header").outerHeight() + $("#open-files-container").outerHeight();
+			}
+
+			$("#crabcode-outline").css("max-height", (window.innerHeight - offset - 80) + "px");
+		} else {
+			$("#crabcode-outline").css("max-width", ($("#editor-holder").width() - 50) + "px");
+		}
+	}
+	
 	function updateOutline() {
 		var content, i, line, name, regex, type, fkt;
 		var doc = DocumentManager.getCurrentDocument();
@@ -203,20 +217,6 @@ define(function (require, exports, module) {
 		$(DocumentManager).off('documentSaved');
 		$(DocumentManager).off("workingSetAdd");
 		$(DocumentManager).off("workingSetRemove");
-	}
-	
-	function handleResize() {
-		if (prefs.get("sidebar")) {
-			var offset = 0;
-			
-			if ($("#working-set-header").css("display") !== "none") {
-				offset = $("#working-set-header").outerHeight() + $("#open-files-container").outerHeight();
-			}
-			
-			$("#crabcode-outline").css("max-height", (window.innerHeight - offset - 80) + "px");
-		} else {
-			$("#crabcode-outline").css("max-width", ($("#editor-holder").width() - 50) + "px");
-		}
 	}
 	
 	function toggleOutline() {

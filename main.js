@@ -230,8 +230,10 @@ define(function (require, exports, module) {
 	}
 	
 	function toggleUnnamed() {
-		var check = !this.getChecked();
-		this.setChecked(check);
+		var command = CommandManager.get("crabcode.outline.unnamed"),
+			check = !command.getChecked();
+		
+		command.setChecked(check);
 		
 		prefs.set("unnamed", check);
 		prefs.save();
@@ -242,8 +244,10 @@ define(function (require, exports, module) {
 	}
 	
 	function toggleArgs() {
-		var check = !this.getChecked();
-		this.setChecked(check);
+		var command = CommandManager.get("crabcode.outline.args"),
+			check = !command.getChecked();
+		
+		command.setChecked(check);
 		
 		prefs.set("args", check);
 		prefs.save();
@@ -254,8 +258,10 @@ define(function (require, exports, module) {
 	}
 	
 	function toggleSidebar() {
-		var check = !this.getChecked();
-		this.setChecked(check);
+		var command = CommandManager.get("crabcode.outline.sidebar"),
+			check = !command.getChecked();
+		
+		command.setChecked(check);
 		
 		prefs.set("sidebar", check);
 		prefs.save();

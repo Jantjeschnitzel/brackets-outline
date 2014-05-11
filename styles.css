@@ -1,6 +1,6 @@
 #crabcode-outline {
-	height: 50%;
-	max-height: 100%;
+    height: 50%;
+    max-height: 100%;
 }
 
 #crabcode-outline.left {
@@ -16,47 +16,47 @@
 }
 
 #crabcode-outline-header {
-	border-top: 1px solid rgba(255,255,255,0.05);
-	padding: 8px 0 9px 12px;
-	font-size: 13px;
-	color: #94a3a7;
-	overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 8px 0 9px 12px;
+    font-size: 13px;
+    color: #94a3a7;
+    overflow: hidden;
 }
 
 #crabcode-outline-window {
-	height: 100%;
-	overflow: auto;
-	white-space: nowrap;
-	width: 100%;
+    height: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .crabcode-outline-entry {
-	color: #fff;
-	padding: 2px 0 2px 22px;
-	border-bottom: 1px solid rgba(0,0,0,0);
-	border-top: 1px solid rgba(0,0,0,0);
+    color: #fff;
+    padding: 2px 0 2px 22px;
+    border-bottom: 1px solid rgba(0,0,0,0);
+    border-top: 1px solid rgba(0,0,0,0);
 }
 
 .crabcode-outline-entry:hover {
-	background: #2D2E30;
-	border-bottom: 1px solid #454648;
-	border-top: 1px solid #27282A;
+    background: #2D2E30;
+    border-bottom: 1px solid #454648;
+    border-top: 1px solid #27282A;
 }
 
 .crabcode-outline-css-id, .crabcode-outline-js-function {
-	color: #62D1FF;
+    color: #62D1FF;
 }
 
 .crabcode-outline-css-class, .crabcode-outline-js-var {
-	color: #ff6c6c;
+    color: #ff6c6c;
 }
 
 .crabcode-outline-css-font {
-	color: #fec;
+    color: #fec;
 }
 
 .crabcode-outline-css-tag {
-	color: #ccc;
+    color: #ccc;
 }
 
 #outline-toolbar-icon {
@@ -68,5 +68,5 @@
     color:rgb(100,159,242);
 }
 #outline-toolbar-icon:before {
-	content: "\2691";
+    content: "\2691";
 }

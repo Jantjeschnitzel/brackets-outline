@@ -82,7 +82,7 @@ define(function (require, exports, module) {
 	}
 	
 	function updateOutline() {
-		var content, i, line, name, regex, type;
+		var content, i, line, name, regex, type, fkt;
 		var doc = DocumentManager.getCurrentDocument();
 		
 		$("#crabcode-outline-window").empty();
@@ -97,7 +97,7 @@ define(function (require, exports, module) {
 					regex = /((\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
 				}
 				
-				var fkt = findMatches(regex, "js", doc.getText());
+				fkt = findMatches(regex, "js", doc.getText());
 				
 				for (i = 0; i < fkt.length; i++) {
 					name = fkt[i][0];
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
 					regex = /((\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
 				}
 				
-				var fkt = findMatches(regex, "js", doc.getText());
+				fkt = findMatches(regex, "js", doc.getText());
 				
 				for (i = 0; i < fkt.length; i++) {
 					name = fkt[i][0];

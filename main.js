@@ -98,20 +98,20 @@ define(function (require, exports, module) {
 				}
 				
 				fkt = findMatches(regex, "js", doc.getText());
-				
-				for (i = 0; i < fkt.length; i++) {
-					name = fkt[i][0];
+					
+				fkt.forEach(function (match) {
+					name = match[0];
 					
 					if (name.length === 0 || name[0] === "(") {
 						if (prefs.get("unnamed")) {
 							name = "function" + name;
 						} else {
-							continue;
+							return;
 						}
 					}
 					
-					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: fkt[i][1], ch: 0 }, goToLine));
-				}
+					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: match[1], ch: 0 }, goToLine));
+				});
 				break;
 			
 			case "JavaScript":
@@ -122,20 +122,20 @@ define(function (require, exports, module) {
 				}
 				
 				fkt = findMatches(regex, "js", doc.getText());
-				
-				for (i = 0; i < fkt.length; i++) {
-					name = fkt[i][0];
-					
+
+				fkt.forEach(function (match) {
+					name = match[0];
+
 					if (name.length === 0 || name[0] === "(") {
 						if (prefs.get("unnamed")) {
 							name = "function" + name;
 						} else {
-							continue;
+							return;
 						}
 					}
-					
-					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: fkt[i][1], ch: fkt[i][2] }, goToLine));
-				}
+
+					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: match[1], ch: match[2] }, goToLine));
+				});
 				break;
 			
 			case "CSS":

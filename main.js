@@ -37,8 +37,7 @@ define(function (require, exports, module) {
 	
 	ExtensionUtils.loadStyleSheet(module, "styles.css");
 	
-	function findMatches(regex, lang, content)
-	{
+	function findMatches(regex, lang, content) {
 		if (content === null) {
 			return [];
 		}
@@ -82,8 +81,22 @@ define(function (require, exports, module) {
 		currentEditor.focus();
 	}
 	
+	function handleResize() {
+		if (prefs.get("sidebar")) {
+			var offset = 0;
+
+			if ($("#working-set-header").css("display") !== "none") {
+				offset = $("#working-set-header").outerHeight() + $("#open-files-container").outerHeight();
+			}
+
+			$("#crabcode-outline").css("max-height", (window.innerHeight - offset - 80) + "px");
+		} else {
+			$("#crabcode-outline").css("max-width", ($("#editor-holder").width() - 50) + "px");
+		}
+	}
+	
 	function updateOutline() {
-		var content, i, line, name, regex, type;
+		var content, i, line, name, regex, type, fkt;
 		var doc = DocumentManager.getCurrentDocument();
 		
 		$("#crabcode-outline-window").empty();
@@ -98,21 +111,21 @@ define(function (require, exports, module) {
 					regex = /((\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
 				}
 				
-				var fkt = findMatches(regex, "js", doc.getText());
-				
-				for (i = 0; i < fkt.length; i++) {
-					name = fkt[i][0];
+				fkt = findMatches(regex, "js", doc.getText());
+					
+				fkt.forEach(function (match) {
+					name = match[0];
 					
 					if (name.length === 0 || name[0] === "(") {
 						if (prefs.get("unnamed")) {
 							name = "function" + name;
 						} else {
-							continue;
+							return;
 						}
 					}
 					
-					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: fkt[i][1], ch: 0 }, goToLine));
-				}
+					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: match[1], ch: 0 }, goToLine));
+				});
 				break;
 			
 			case "JavaScript":
@@ -122,21 +135,21 @@ define(function (require, exports, module) {
 					regex = /((\w*)\s*[=:]\s*)?function\s*(\w*)\s*()\(/g;
 				}
 				
-				var fkt = findMatches(regex, "js", doc.getText());
-				
-				for (i = 0; i < fkt.length; i++) {
-					name = fkt[i][0];
-					
+				fkt = findMatches(regex, "js", doc.getText());
+
+				fkt.forEach(function (match) {
+					name = match[0];
+
 					if (name.length === 0 || name[0] === "(") {
 						if (prefs.get("unnamed")) {
 							name = "function" + name;
 						} else {
-							continue;
+							return;
 						}
 					}
-					
-					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: fkt[i][1], ch: fkt[i][2] }, goToLine));
-				}
+
+					$("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-js-function").text(name).click({ line: match[1], ch: match[2] }, goToLine));
+				});
 				break;
 			
 			case "CSS":
@@ -206,20 +219,6 @@ define(function (require, exports, module) {
 		$(DocumentManager).off("workingSetRemove");
 	}
 	
-	function handleResize() {
-		if (prefs.get("sidebar")) {
-			var offset = 0;
-			
-			if ($("#working-set-header").css("display") !== "none") {
-				offset = $("#working-set-header").outerHeight() + $("#open-files-container").outerHeight();
-			}
-			
-			$("#crabcode-outline").css("max-height", (window.innerHeight - offset - 80) + "px");
-		} else {
-			$("#crabcode-outline").css("max-width", ($("#editor-holder").width() - 50) + "px");
-		}
-	}
-	
 	function toggleOutline() {
 		prefs.set("enabled", !prefs.get("enabled"));
 		prefs.save();
@@ -231,8 +230,10 @@ define(function (require, exports, module) {
 	}
 	
 	function toggleUnnamed() {
-		var check = !this.getChecked();
-		this.setChecked(check);
+		var command = CommandManager.get("crabcode.outline.unnamed"),
+			check = !command.getChecked();
+		
+		command.setChecked(check);
 		
 		prefs.set("unnamed", check);
 		prefs.save();
@@ -243,8 +244,10 @@ define(function (require, exports, module) {
 	}
 	
 	function toggleArgs() {
-		var check = !this.getChecked();
-		this.setChecked(check);
+		var command = CommandManager.get("crabcode.outline.args"),
+			check = !command.getChecked();
+		
+		command.setChecked(check);
 		
 		prefs.set("args", check);
 		prefs.save();
@@ -255,8 +258,10 @@ define(function (require, exports, module) {
 	}
 	
 	function toggleSidebar() {
-		var check = !this.getChecked();
-		this.setChecked(check);
+		var command = CommandManager.get("crabcode.outline.sidebar"),
+			check = !command.getChecked();
+		
+		command.setChecked(check);
 		
 		prefs.set("sidebar", check);
 		prefs.save();

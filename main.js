@@ -54,6 +54,10 @@ define(function (require, exports, module) {
                 case "css":
                     name = match[1];
                     break;
+                
+                case "less":
+                    name = match[1];
+                    break;
 
                 case "js":
                     name = (match[3] || match[2] || "") + (match[4] || "");
@@ -156,6 +160,33 @@ define(function (require, exports, module) {
                 regex = /([^\r\n,{}]+)((?=[^}]*\{)|\s*\{)/g;
                 
                 var lines = findMatches(regex, "css", doc.getText());
+                
+                for (i = 0; i < lines.length; i++) {
+                    switch (lines[i][0][0]) {
+                    case "#":
+                        type = "id";
+                        break;
+                        
+                    case ".":
+                        type = "class";
+                        break;
+                        
+                    case "@":
+                        type = "font";
+                        break;
+                        
+                    default:
+                        type = "tag";
+                        break;
+                    }
+                    
+                    $("#crabcode-outline-window").append($(document.createElement("div")).addClass("crabcode-outline-entry crabcode-outline-css-" + type).text(lines[i][0]).click({ line: lines[i][1], ch: lines[i][2] }, goToLine));
+                }
+                break;
+                case "LESS":
+                regex = /([^\r\n,{}]+)((?=[^}]*\{)|\s*\{)/g;
+                
+                var lines = findMatches(regex, "less", doc.getText());
                 
                 for (i = 0; i < lines.length; i++) {
                     switch (lines[i][0][0]) {

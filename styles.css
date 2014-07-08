@@ -69,5 +69,7 @@
     color:rgb(100,159,242);
 }
 #outline-toolbar-icon:before {
-    content: "\2691";
+	content: "{ }";
+	font-size: 66%;
+	font-weight: bold;
 }

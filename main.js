@@ -77,7 +77,9 @@ define(function (require, exports, module) {
             }
         }
         
-        result.sort();
+        if (prefs.get("sort")) {
+			result.sort();
+		}
         
         return result;
     }
@@ -250,6 +252,20 @@ define(function (require, exports, module) {
         }
     }
     
+    function toggleSort() {
+        var command = CommandManager.get("crabcode.outline.sort"),
+            check = !command.getChecked();
+        
+        command.setChecked(check);
+        
+        prefs.set("sort", check);
+        prefs.save();
+        
+        if (prefs.get("enabled")) {
+            updateOutline();
+        }
+    }
+    
     function toggleArgs() {
         var command = CommandManager.get("crabcode.outline.args"),
             check = !command.getChecked();
@@ -284,12 +300,15 @@ define(function (require, exports, module) {
     var cmdArgs    = CommandManager.register("Outline: Show Arguments", "crabcode.outline.args", toggleArgs);
     var cmdSidebar = CommandManager.register("Outline: In Sidebar", "crabcode.outline.sidebar", toggleSidebar);
     var cmdUnnamed = CommandManager.register("Outline: Show Unnamed Functions", "crabcode.outline.unnamed", toggleUnnamed);
+    var cmdSort = CommandManager.register("Outline: Sort Functions", "crabcode.outline.sort", toggleSort);
     
     var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
     menu.addMenuDivider();
     menu.addMenuItem("crabcode.outline.sidebar");
     menu.addMenuItem("crabcode.outline.args");
     menu.addMenuItem("crabcode.outline.unnamed");
+    menu.addMenuItem("crabcode.outline.sort");
+    menu.addMenuDivider();
     
     $(document.createElement("a"))
         .attr("id", "outline-toolbar-icon")
@@ -322,6 +341,12 @@ define(function (require, exports, module) {
         prefs.save();
     }
     
+    if (typeof prefs.get("sort") !== "boolean") {
+        prefs.definePreference("sort", "boolean", true);
+        prefs.set("sort", true);
+        prefs.save();
+    }
+    
     if (prefs.get("enabled")) {
         loadOutline();
     }
@@ -336,6 +361,10 @@ define(function (require, exports, module) {
 
     if (prefs.get("sidebar")) {
         cmdSidebar.setChecked(true);
+    }
+
+    if (prefs.get("sort")) {
+        cmdSort.setChecked(true);
     }
     
     window.addEventListener("resize", handleResize);
